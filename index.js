@@ -3,12 +3,15 @@ const app = express();
 const { port } = require('./config');
 const apiRouter = require('./routes/api.js');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
+//cors
+app.use(cors());
 //db
 require('./db/mongoose.js');
 // parsers
 //Content-type: application/json
-app.use(bodyParser.json()); 
+app.use(bodyParser.json());
 //routers
 app.use('/api/', apiRouter)
 // server
