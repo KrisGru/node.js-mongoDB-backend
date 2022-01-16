@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const testActions = require('../actions/test.js')
+const userActions = require('../actions/userActions.js')
 
-router.get('/api/', testActions.homepage);
+router.get('/api/', userActions.saveUser);
 
 
 module.exports = router;
