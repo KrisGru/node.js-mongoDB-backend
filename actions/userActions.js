@@ -1,30 +1,32 @@
 const User = require('../db/models/user')
 
 module.exports = {
-//pobieranie wszystkich danych
-  async getAllUsers(req,res) {
-    const doc = await User.find({});
-    res.status(200).json(doc);
-  },
-//pobieranie jednej notatki
-  async getUser(req, res) {
-    const id = req.params.id;
-    const user = await User.findOne({ _id: id });
-    res.status(200).json(user);
-  },
-//dodawanie nowej notatki
-  async saveUser(req,res) {
-    const email = req.body.email;
-    const login = req.body.login;
-    const password = req.body.password;
-    const typeUser = req.body.typeUser;
-    let newUser;
+//login
+  async login(req, res) {
     try {
-      newUser = new User({ email, login, password, typeUser });
-      await newUser.save();
+      const { login, password } = req.body;
+      const user = await User.findOne({ login, password });
+      console.log('user', user)
+      if(user===null){
+        res.status(401).json({ message: "User doesn't exist" });
+      }else{
+        res.status(200).json(user);
+      }
     } catch(error) {
-      return res.status(404).json({ message: error.message });
+      res.status(500).json({ message: erorr.message })
     }
-    res.status(201).json(newUser);
+  },
+//register
+  async register(req,res) {
+    const { email, login, password, typeUser } = req.body;
+
+    try {
+      let newUser = new User({ email, login, password, typeUser });
+      await newUser.save();
+      res.status(201).json(newUser)
+      console.log('newUser', newUser)
+    } catch(error) {
+      return res.status(500).json({ message: error.message });
+    }
   },
 }
