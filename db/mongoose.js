@@ -1,4 +1,14 @@
 const mongoose = require('mongoose');
 const { database } = require('../config')
-//nazwa bazy danych. Jesli nie ma to sie utworzy
-mongoose.connect(database, {});
+
+const connectDB = () => {
+  return mongoose.connect(database)
+  .then(() => {
+    console.log('Connected to MongoDB')
+  })
+  .catch((err) => {
+    console.error(err)
+  })
+}
+
+module.exports = {connectDB};
